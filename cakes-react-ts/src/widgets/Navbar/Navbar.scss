@@ -1,0 +1,64 @@
+.navbar_inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  .nav_logo {
+    width: 50px;
+    height: 50px;
+    img {
+      width: 100%;
+      border-radius: 30px;
+    }
+  }
+  .nav_links,
+  .nav_UI {
+    display: flex;
+    gap: 30px;
+  }
+  .nav_links{
+    a{
+        color: rgb(253, 175, 175);
+        transition: 0.3s;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+  }
+  .nav_language {
+    position: relative;
+    span {
+        color: rgb(253, 175, 175);
+
+    }
+    .language_dropdown {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      background-color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 10px;
+    }
+  }
+  .nav_user {
+    position: relative;
+
+    .nav_user_dropdown {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      background-color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 10px;
+      a {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 10px;
+        color: rgb(253, 175, 175);
+
+      }
+    }
+  }
+}
