@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.scss";
 import logo from "../../assets/Icons/Logo.png";
@@ -13,10 +13,12 @@ const Navbar = (props: Props) => {
 
   const toggleLanguageDropdown = () => {
     setIsLanguageDropdownOpen(!isLanguageDropdownOpen);
+    setIsUserDropdownOpen(false);
   };
 
   const toggleUserDropdown = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);
+    setIsLanguageDropdownOpen(false)
   };
 
   return (

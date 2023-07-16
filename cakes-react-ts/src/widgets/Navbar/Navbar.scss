@@ -20,8 +20,13 @@
     a{
         color: rgb(253, 175, 175);
         transition: 0.3s;
+        font-size: 23px;
         &:hover{
             text-decoration: underline;
+        }
+        &.active{
+          text-decoration: underline;
+          color: rgb(255, 109, 109);
         }
     }
   }
@@ -29,7 +34,11 @@
     position: relative;
     span {
         color: rgb(253, 175, 175);
-
+        cursor: pointer;
+        font-weight: 600;
+        &:hover{
+          color: rgb(255, 109, 109);
+        }
     }
     .language_dropdown {
       display: flex;
@@ -43,7 +52,10 @@
   }
   .nav_user {
     position: relative;
-
+    img{
+      cursor: pointer;
+      
+    }
     .nav_user_dropdown {
       display: flex;
       flex-direction: column;
