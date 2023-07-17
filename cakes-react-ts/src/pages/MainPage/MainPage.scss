@@ -1,0 +1,30 @@
+.catalog_title{
+    h1{
+        color:rgb(253, 175, 175);
+        font-size: 40px;
+        font-weight: 300;
+    }
+}
+.catalog_tabs{
+    display: flex;
+    justify-content: space-between;
+    button{
+        background: none;
+        border: none;
+        color: rgb(124, 124, 124);
+        cursor: pointer;
+        font-size: 25px;
+        padding-bottom: 5px;
+        transition: 0.2s;
+        &.active{
+            border-bottom: 1px solid rgb(253, 175, 175);;
+            color: rgb(253, 175, 175);
+        }
+    }
+}
+.catalog_content{
+    padding-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
