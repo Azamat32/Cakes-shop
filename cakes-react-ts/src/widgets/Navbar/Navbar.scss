@@ -15,9 +15,7 @@
     width: 65%;
     display: flex;
     justify-content: space-between;
-    &.active{
-      width: 100%;opacity: 1;
-    }
+  
   }
   .nav_links,
   .nav_UI {
@@ -80,6 +78,12 @@
         margin-bottom: 10px;
         color: rgb(253, 175, 175);
       }
+    }
+   
+  }
+  .nav_backet{
+    img{
+      cursor: pointer;
     }
   }
 }
@@ -170,6 +174,9 @@
       transition: 0.4s;
       flex-direction: column;
       gap: 20px;
+      &.active{
+        width: 100%;opacity: 1;
+      }
       .nav_links {
         flex-direction: column;
         padding-left: 15px;

@@ -73,15 +73,24 @@
   }
 }
 
-@media  (max-width: 720px) {
-  .catalog_tabs{
+@media (max-width: 720px) {
+  .catalog_tabs {
     gap: 20px;
-    button{
+    button {
       padding-bottom: 0px;
-      
     }
   }
-  .Item{
+  .Item {
     width: 100%;
+    .item_inner {
+      padding: 16px;
+      border: 1px solid rgb(253, 175, 175);
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 1;
+    }
+    .item_btn {
+      display: flex;
+    }
   }
 }

@@ -1,5 +1,4 @@
-import React from 'react'
-
+import "./SliderItem.scss"
 type SliderProps = {
     SliderImage?: string,
 }

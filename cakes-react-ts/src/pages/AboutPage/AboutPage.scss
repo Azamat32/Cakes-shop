@@ -1,0 +1,33 @@
+.about_wrap{
+    display: flex;
+    gap:50px;
+    padding-top: 150px;
+    .about_left{
+        width:50%;
+        
+    }
+    .about_right{
+        width:50%;
+        img{
+            border-radius: 10px;
+            width: 100%;
+        }
+    }
+}
+
+@media (max-width: 720px) {
+    .about_wrap{
+        flex-direction: column;
+        .about_left{
+            width:100%;
+            
+        }
+        .about_right{
+            width:100%;
+    
+           
+        }
+    }
+   
+
+}
