@@ -2,18 +2,18 @@
   position: relative;
   width: 20%;
   height: 365px;
-  .item_product_name{
-    span{
-        font-size: 20px;
-        font-weight: 300;
-      }
-  }
-.item_product_cost{
-    span{
-        font-size: 20px;
-        font-weight: 500;
+  .item_product_name {
+    span {
+      font-size: 20px;
+      font-weight: 300;
     }
-}
+  }
+  .item_product_cost {
+    span {
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
   cursor: pointer;
   .item_inner {
     position: absolute;
@@ -66,9 +66,22 @@
       cursor: pointer;
       z-index: 1;
     }
-    
+
     .item_btn {
       display: flex;
     }
+  }
+}
+
+@media  (max-width: 720px) {
+  .catalog_tabs{
+    gap: 20px;
+    button{
+      padding-bottom: 0px;
+      
+    }
+  }
+  .Item{
+    width: 100%;
   }
 }
