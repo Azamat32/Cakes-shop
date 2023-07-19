@@ -24,7 +24,7 @@
   }
   .nav_links {
     a {
-      color: rgb(253, 175, 175);
+      color: rgb(233,131,170);
       transition: 0.3s;
       font-size: 23px;
       &:hover {
@@ -32,18 +32,18 @@
       }
       &.active {
         text-decoration: underline;
-        color: rgb(255, 109, 109);
+        color: rgb(35,159,177);
       }
     }
   }
   .nav_language {
     position: relative;
     span {
-      color: rgb(253, 175, 175);
+      color: rgb(233,131,170);
       cursor: pointer;
       font-weight: 600;
       &:hover {
-        color: rgb(255, 109, 109);
+        color: rgb(35,159,177);
       }
     }
     .language_dropdown {
@@ -76,7 +76,7 @@
         display: flex;
         gap: 15px;
         margin-bottom: 10px;
-        color: rgb(253, 175, 175);
+        color: rgb(233,131,170);
       }
     }
    
@@ -95,7 +95,7 @@
   cursor: pointer;
   z-index: 20;
   span{
-    background: rgb(253, 175, 175);
+    background: rgb(233,131,170);
     width: 100%;
     height: 2px;
     display: block;
@@ -105,7 +105,7 @@
   &::after{
     content: "";
     position: absolute;
-    background: rgb(253, 175, 175);
+    background: rgb(233,131,170);
     width: 100%;
     height: 2px;
     top: 12px;
@@ -116,7 +116,7 @@
     content: "";
 
     position: absolute;
-    background: rgb(253, 175, 175);
+    background: rgb(233,131,170);
     width: 100%;
     height: 2px;
     bottom: 0;

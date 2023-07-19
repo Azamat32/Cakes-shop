@@ -1,7 +1,7 @@
 type Props = {};
 import Examle3 from "../../assets/ExampleGallery/conditer3.jpg";
 import "./AboutPage.scss"
-const AboutPage = (props: Props) => {
+const AboutPage = (_props: Props) => {
   return (
     <div className="about">
       <div className="container">

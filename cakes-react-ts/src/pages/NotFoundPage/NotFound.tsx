@@ -1,5 +1,5 @@
 type Props = {};
-const NotFound = (props: Props) => {
+const NotFound = (_props: Props) => {
   return <div>NotFound</div>;
 };
 

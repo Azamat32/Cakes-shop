@@ -18,7 +18,7 @@ import "./MainPage.scss";
 import CatalogItem from "../../widgets/CatalogItem/CatalogItem";
 type Props = {};
 
-const MainPage = (props: Props) => {
+const MainPage = (_props: Props) => {
   const [activeTab, setActiveTab] = useState("Торты");
   const handleTabClick = (role: string) => {
     setActiveTab(role);

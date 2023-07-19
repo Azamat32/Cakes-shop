@@ -1,9 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import  { useState, useRef, useEffect } from "react";
 import "./Slider.scss";
 import SliderItem from "./ SliderItem/SliderItem";
 import "swiper/css";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Swiper as SwiperClass } from "swiper/types";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 
 type SliderProps = {
   sliderData: { img: string }[];
@@ -12,7 +11,7 @@ type SliderProps = {
 const Slider = (props: SliderProps) => {
   const { sliderData } = props;
   const [activeSlide, setActiveSlide] = useState(0);
-  const sliderRef = useRef<SwiperClass>(null);
+  const sliderRef = useRef<SwiperRef | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {

@@ -1,7 +1,7 @@
 
 type Props = {}
 
-const UserPage = (props: Props) => {
+const UserPage = (_props: Props) => {
   return (
     <div>UserPage</div>
   )
