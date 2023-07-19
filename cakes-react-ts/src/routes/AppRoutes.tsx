@@ -7,6 +7,7 @@ import NotFound from "../pages/NotFoundPage/NotFound";
 import AboutPage from "../pages/AboutPage/AboutPage";
 import ContactPage from "../pages/ContactPage/ContactPage";
 import Loader from "../widgets/Loader/Loader"
+import Footer from "../widgets/Footer/Footer"
 export const AppRoutes: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const isAuthenticated = true; // Replace with your authentication logic
@@ -39,6 +40,7 @@ export const AppRoutes: React.FC = () => {
         {isAuthenticated && <Route path="/user" element={<UserPage />} />}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 };
