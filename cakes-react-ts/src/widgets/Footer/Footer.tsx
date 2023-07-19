@@ -18,6 +18,7 @@ const Footer = (props: Props) => {
               <NavLink to="/about">О нас</NavLink>
               <NavLink to="/contact">Контакты</NavLink>
             </div>
+            <a href="#">+7 (771) 555 60 60</a>
           </div>
         </div>
       </div>
