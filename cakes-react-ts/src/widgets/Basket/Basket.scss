@@ -1,0 +1,129 @@
+.Basket {
+  position: fixed;
+  z-index: 11;
+  right: 0;
+  top: 0;
+  width: 544px;
+  height: 100%;
+  transition: 0.4s;
+  transform: translateX(100%);
+  transition: transform 0.4s ease-in-out;
+
+  // Style when the basket is open
+  &.open {
+    transform: translateX(0);
+  }
+  .Basket_inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    padding: 0 4px;
+    .basket_header {
+      padding: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ececec;
+      .close {
+        cursor: pointer;
+        img {
+          width: 20px;
+        }
+      }
+    }
+    .basket_content {
+      padding: 0px 10px;
+      overflow: auto;
+     .nothing{
+      text-align: center;
+     }
+      .Basket_item {
+        border-bottom: 1px solid #ececec;
+        .basket_item_inner {
+          display: flex;
+          gap: 40px;
+          padding: 10px;
+          .basket_item_left {
+            min-width: 88px;
+            min-height: 88px;
+            max-width: 88px;
+            max-height: 88px;
+            img {
+              width: 100%;
+              -o-object-fit: cover;
+              object-fit: cover;
+              border-radius: 20px;
+            }
+          }
+          .Basket_item_right {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 100px;
+            grid-gap: 8px 16px;
+            h1 {
+              margin: 0;
+            }
+            .basket_img {
+              width: 20px;
+              justify-self: end;
+              position: relative;
+              height: 24px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              img {
+                width: 100%;
+                cursor: pointer;
+              }
+            }
+            .button_control {
+              align-self: end;
+            }
+            .control_item {
+              border: 1px solid rgb(233, 131, 170);
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              width: 100px;
+              height: 40px;
+              border-radius: 8px;
+              justify-content: space-around;
+              button {
+                background: none;
+                border: none;
+                color: #989898;
+                font-size: 1.2rem;
+                cursor: pointer;
+              }
+            }
+            .basket_price {
+              justify-self: end;
+              align-self: end;
+              font-size: 1.25rem;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+      .btn{
+        margin-top: 30px;
+        background: rgb(233, 131, 170);
+        border: 1px solid rgb(233, 131, 170);
+        color: #fff;
+        font-size:30px;
+        margin-bottom: 100px;
+        cursor: pointer;
+        width: 100%;
+        border-radius:10px;
+        transition: 0.4s;
+        &:hover{
+          background:#fff ;
+          color: rgb(233, 131, 170);
+
+        }
+      }
+    }
+  }
+}

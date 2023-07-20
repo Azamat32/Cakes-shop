@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import MainPage from "../pages/MainPage/MainPage";
 import UserPage from "../pages/UserPage/UserPage";
+import BuyPage from "../pages/BuyPage/BuyPage";
+
 import Navbar from "../widgets/Navbar/Navbar";
 import NotFound from "../pages/NotFoundPage/NotFound";
 import AboutPage from "../pages/AboutPage/AboutPage";
@@ -36,6 +38,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="/" element={<MainPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/order" element={<BuyPage />} />
 
         {isAuthenticated && <Route path="/user" element={<UserPage />} />}
         <Route path="*" element={<NotFound />} />

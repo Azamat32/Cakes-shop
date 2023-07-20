@@ -1,14 +1,18 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import './Navbar.scss';
-import logo from '../../assets/Icons/Logo.png';
-import user from '../../assets/Icons/account.d75552a1.svg';
-import exit from '../../assets/Icons/logout.408bc926.svg';
-import baket from '../../assets/Icons/baket.svg';
+import  { useState } from "react";
+import { NavLink } from "react-router-dom";
+import "./Navbar.scss";
+import logo from "../../assets/Icons/Logo.png";
+import user from "../../assets/Icons/account.d75552a1.svg";
+import exit from "../../assets/Icons/logout.408bc926.svg";
+import baket from "../../assets/Icons/baket.svg";
+import Basket from "../Basket/Basket";
 
 type Props = {};
 
 const Navbar = (_props: Props) => {
+  const [isBasketOpen, setIsBasketOpen] = useState(false); // New state for the basket component
+  const [isDarkOverlayVisible, setIsDarkOverlayVisible] = useState(false);
+
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isBurgerActive, setIsBurgerActive] = useState(false);
@@ -27,6 +31,16 @@ const Navbar = (_props: Props) => {
     setIsBurgerActive(!isBurgerActive);
   };
 
+  const toggleBasket = () => {
+    setIsBasketOpen(!isBasketOpen);
+    setIsDarkOverlayVisible(!isDarkOverlayVisible);
+  };
+
+  const handleBasketClose = () => {
+    setIsBasketOpen(false);
+    setIsDarkOverlayVisible(false);
+  };
+
   return (
     <div className={`navbar`}>
       <div className="container">
@@ -34,9 +48,7 @@ const Navbar = (_props: Props) => {
           <div className="nav_logo">
             <img src={logo} alt="" />
           </div>
-          <div
-            className={`nav_inner_links ${isBurgerActive ? 'active' : ''}`}
-          >
+          <div className={`nav_inner_links ${isBurgerActive ? "active" : ""}`}>
             <div className="nav_links">
               <NavLink to="/" onClick={toggleBurger}>
                 Каталог
@@ -76,20 +88,31 @@ const Navbar = (_props: Props) => {
                   </div>
                 )}
               </div>
-              <div className="nav_backet">
+              <div className="nav_backet" onClick={toggleBasket}>
                 <img src={baket} alt="" />
               </div>
             </div>
           </div>
-
-          <div
-            className={`nav_burger_btn ${isBurgerActive ? 'active' : ''}`}
-            onClick={toggleBurger}
-          >
-            <span></span>
+          <div className="adaptive_side">
+            <div className="nav_backet_adaptive">
+              <NavLink to="/order">
+                <img src={baket} alt="" />
+              </NavLink>
+            </div>
+            <div
+              className={`nav_burger_btn ${isBurgerActive ? "active" : ""}`}
+              onClick={toggleBurger}
+            >
+              <span></span>
+            </div>
           </div>
         </div>
       </div>
+      <div
+        className={`dark-overlay ${isBasketOpen ? "visible" : ""}`}
+        onClick={handleBasketClose}
+      ></div>
+      <Basket BasketState={isBasketOpen} onCloseBasket={handleBasketClose} />
     </div>
   );
 };
