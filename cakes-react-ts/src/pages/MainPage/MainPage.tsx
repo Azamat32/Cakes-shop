@@ -7,6 +7,8 @@ import milk3 from "../../assets/ExampleGallery/milk3.jpeg";
 import milk4 from "../../assets/ExampleGallery/milk4.jpeg";
 
 import Examle3 from "../../assets/ExampleGallery/conditer3.jpg";
+import Examle4 from "../../assets/ExampleGallery/conditer4.jpg";
+
 import cake2 from "../../assets/ExampleGallery/cake2.jpg";
 import pie1 from "../../assets/ExampleGallery/pie1.jpg";
 import other1 from "../../assets/ExampleGallery/other1.jpg";
@@ -28,7 +30,12 @@ const MainPage = (_props: Props) => {
     setActiveTab(role);
   };
 
-  const images = [{ img: Examle1 }, { img: Examle2 }, { img: Examle3 }];
+  const images = [
+    { img: Examle1 },
+    { img: Examle2 },
+    { img: Examle3 },
+    { img: Examle4 },
+  ];
   const Catalog = [
     {
       itemImage: cake2,
