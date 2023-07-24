@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import MainPage from "../pages/MainPage/MainPage";
 import UserPage from "../pages/UserPage/UserPage";
 import BuyPage from "../pages/BuyPage/BuyPage";
+import DashboardPage from "../pages/DashboardPage/DashboardPage";
 
 import Navbar from "../widgets/Navbar/Navbar";
 import NotFound from "../pages/NotFoundPage/NotFound";
 import AboutPage from "../pages/AboutPage/AboutPage";
 import ContactPage from "../pages/ContactPage/ContactPage";
-import Loader from "../widgets/Loader/Loader"
-import Footer from "../widgets/Footer/Footer"
+import Loader from "../widgets/Loader/Loader";
+import Footer from "../widgets/Footer/Footer";
+
 export const AppRoutes: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const isAuthenticated = true; // Replace with your authentication logic
@@ -21,29 +23,33 @@ export const AppRoutes: React.FC = () => {
     }, 2000); // Simulating a 2-second delay, replace with your actual loading logic
   }, []);
 
+  const location = useLocation();
+
   if (isLoading) {
-    return (
-      <Loader />
-    );
+    return <Loader />;
   }
 
   if (!isAuthenticated) {
     return <Navigate to="/" />;
   }
 
+  // Check if the current location is the DashboardPage
+  const isDashboardPage = location.pathname === "/admin_dashboard";
+
   return (
-    <BrowserRouter>
-      <Navbar />
+    <>
+      {isDashboardPage ? null : <Navbar />}
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/order" element={<BuyPage />} />
+        <Route path="/admin_dashboard" element={<DashboardPage />} />
 
         {isAuthenticated && <Route path="/user" element={<UserPage />} />}
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <Footer />
-    </BrowserRouter>
+      {isDashboardPage ? null : <Footer />}
+    </>
   );
 };

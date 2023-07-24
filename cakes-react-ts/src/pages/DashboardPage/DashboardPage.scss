@@ -1,0 +1,42 @@
+.Dashboard{
+    display: flex;
+    justify-content: space-between;
+    gap: 100px;
+    .sidebar{
+        background: rgb(233, 131, 170);
+        width: 20%;
+        padding:20px;
+        height: 100vh;
+        .title{
+            margin-bottom: 50px;
+            h1{
+                margin: 0;
+                color: #fff;
+                font-weight: 300;
+            }
+        }
+        .sidebar_list{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            button{
+                background:none;
+                cursor: pointer;
+                border: none;
+                border-bottom: 1px solid #fff;
+                color: #fff;
+                font-size:20px; 
+                &:hover{
+                    background: rgb(35, 159, 177);
+                }
+                &.active{
+                    background: rgb(35, 159, 177);
+
+                }
+            }
+        }
+    }
+    .dashboard_inner{
+        width: 80%;
+    }
+}
