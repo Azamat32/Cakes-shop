@@ -47,7 +47,6 @@ const Product = sequelize.define("Product", {
   img: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: "default_image.jpg", // Provide a default value here
   },
 });
 

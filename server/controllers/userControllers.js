@@ -79,7 +79,16 @@ exports.login = async (req, res, next) => {
     user.is_verified = true;
     await user.save();
 
-    return res.status(200).json({ message: "Login successful", user });
+    // Create a JWT token
+    const token = jwt.sign(
+      { userId: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h", // Set the token expiry to 1 hour (you can adjust this as needed)
+      }
+    );
+
+    return res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
@@ -96,14 +105,20 @@ exports.adminLogin = async (req, res, next) => {
 
     // Compare the provided username and password with the values from .env
     const isUsernameValid = username === adminUsername;
-    const isPasswordValid = bcrypt.compare(password, adminPassword);
-
+    const isPasswordValid = password === adminPassword;
+    console.log(password, adminPassword);
+    console.log(isPasswordValid);
     if (!isUsernameValid || !isPasswordValid) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
     // Admin user authenticated successfully
-    return res.status(200).json({ message: "Admin login successful" });
+    // Create a JWT token
+    const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
+      expiresIn: "1h", // Set the token expiry to 1 hour (you can adjust this as needed)
+    });
+
+    return res.status(200).json({ message: "Admin login successful", token });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });

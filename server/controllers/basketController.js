@@ -1,9 +1,10 @@
 const { Router } = require("express");
-
+const isAuthenticated = require("../middleware/isAuthenticated");
 const { Basket } = require("../models/model");
 
-exports.addOne = async (req, res, next) => {
-  try {
+exports.addOne = [
+  isAuthenticated, // Use the isAuthenticated middleware here
+  async (req, res, next) => {
     try {
       // Assuming the request body contains the necessary product details
       const { title, price, itemImage, role } = req.body;
@@ -20,7 +21,30 @@ exports.addOne = async (req, res, next) => {
     } catch (error) {
       res.status(500).json({ error: "Failed to add product to basket" });
     }
-  } catch (e) {
-    console.log(e);
-  }
-};
+  },
+];
+
+exports.deleteOne = [
+  isAuthenticated,
+  async (req, res, next) => {
+    try {
+      // Assuming the request body contains the item ID to be deleted
+      const { itemId } = req.body;
+
+      // Find the item in the Basket table by its ID
+      const itemToDelete = await Basket.findOne({ where: { id: itemId } });
+
+      // If the item is not found, return an error
+      if (!itemToDelete) {
+        return res.status(404).json({ error: "Item not found in basket" });
+      }
+
+      // Delete the item from the database
+      await itemToDelete.destroy();
+
+      res.json({ message: "Item deleted from basket" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete item from basket" });
+    }
+  },
+];
