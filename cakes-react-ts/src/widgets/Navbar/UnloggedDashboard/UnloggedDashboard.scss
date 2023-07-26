@@ -1,0 +1,59 @@
+.unlogged-dashboard {
+  position: absolute;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 30;
+  background: #fff;
+  .unlogged-dashboard_inner {
+    .tabs {
+        display: flex;
+        gap: 15px;
+      button {
+        background: none;
+        border: none;
+        color: rgb(233, 131, 170);
+        font-size: 20px;
+        transition: 0.4s;
+        user-select: none;
+        cursor: pointer;
+        &:hover {
+          color: rgb(35, 159, 177);
+          text-decoration: underline;
+        }
+        &.active {
+          text-decoration: underline;
+
+          color: rgb(35, 159, 177);
+        }
+      }
+    }
+    .registration-form_input{
+        display: flex;
+        flex-direction: column;
+       
+    }
+    input{
+        padding:0px;
+        text-indent: 10px;
+        height: 30px;
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+    .registration-form , .login-form{
+        button{
+            background: rgb(233, 131, 170);
+            color: #fff;
+            border: 1px solid rgb(233, 131, 170);
+            transition: 0.4s;
+            border-radius: 10px;
+            font-size: 17px;
+            cursor: pointer;
+            &:hover{
+                background: #fff;
+                color: rgb(233, 131, 170);
+            }
+        }
+    }
+  }
+}

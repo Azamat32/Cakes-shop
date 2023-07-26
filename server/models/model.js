@@ -44,6 +44,11 @@ const Product = sequelize.define("Product", {
     type: DataTypes.DECIMAL,
     allowNull: false,
   },
+  img: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: "default_image.jpg", // Provide a default value here
+  },
 });
 
 const Basket = sequelize.define("Basket", {
