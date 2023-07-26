@@ -1,5 +1,7 @@
 const { Router } = require("express");
 const { Product } = require("../models/model");
+const { Sequelize } = require("sequelize");
+
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 const isAdmin = require("../middleware/isAdminMiddleware");
@@ -8,6 +10,7 @@ exports.getAll = async (req, res, next) => {
     const products = await getAllWithSequentialIds();
     res.json(products);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Failed to fetch products" });
   }
 };
