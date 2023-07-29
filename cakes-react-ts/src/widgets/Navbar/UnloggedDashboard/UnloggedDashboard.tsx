@@ -10,15 +10,7 @@ const UnloggedDashboard: React.FC = () => {
     setShowRegistration(isRegistrationTab);
   };
 
-  const handleRegister = (userData: { nickname: string; phone: string }) => {
-    // Perform registration logic (e.g., API calls)
-    console.log("Registration Data:", userData);
-  };
-
-  const handleLogin = (phone: string) => {
-    // Perform login logic (e.g., API calls)
-    console.log("Phone:", phone);
-  };
+ 
 
   return (
     <div className="unlogged-dashboard">
@@ -38,9 +30,9 @@ const UnloggedDashboard: React.FC = () => {
           </button>
         </div>
         {showRegistration ? (
-          <DashboardReg onRegister={handleRegister} />
+          <DashboardReg  />
         ) : (
-          <DashboardLog onLogin={handleLogin} />
+          <DashboardLog  />
         )}
       </div>
     </div>

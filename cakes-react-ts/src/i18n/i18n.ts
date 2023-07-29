@@ -11,7 +11,9 @@ i18n.use(initReactI18next).init({
         contact: 'Contact',
         profile: 'Profile',
         exit: 'Exit',
-        eng:"ENG"
+        eng:"ENG",
+        name:"Your name",
+        phone: "Your phone number",
       },
     },
     ru: {
@@ -22,7 +24,9 @@ i18n.use(initReactI18next).init({
         contact: 'Контакты',
         profile: 'Профиль',
         exit: 'Выход',
-        eng:"RU"
+        eng:"RU",
+        name:"Ваше имя",
+        phone: "Ваш номер телефона"
       },
     },
     kz: {
@@ -33,7 +37,9 @@ i18n.use(initReactI18next).init({
         contact: 'Байланыс',
         profile: 'Профиль',
         exit: 'Шығу',
-        eng: "KZ"
+        eng: "KZ",
+        name:"Аты-жөні",
+        phone: "Сіздің номерініз"
       },
     },
   },

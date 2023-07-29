@@ -4,7 +4,7 @@ import MainPage from "../pages/MainPage/MainPage";
 import UserPage from "../pages/UserPage/UserPage";
 import BuyPage from "../pages/BuyPage/BuyPage";
 import DashboardPage from "../pages/DashboardPage/DashboardPage";
-
+import PrivateRoutes from "./PrivateRoutes";
 import Navbar from "../widgets/Navbar/Navbar";
 import NotFound from "../pages/NotFoundPage/NotFound";
 import AboutPage from "../pages/AboutPage/AboutPage";
@@ -14,8 +14,6 @@ import Footer from "../widgets/Footer/Footer";
 
 export const AppRoutes: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const isAuthenticated = true; // Replace with your authentication logic
-
   useEffect(() => {
     // Simulate an asynchronous data fetching or any other async operation
     setTimeout(() => {
@@ -29,10 +27,6 @@ export const AppRoutes: React.FC = () => {
     return <Loader />;
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/" />;
-  }
-
   // Check if the current location is the DashboardPage
   const isDashboardPage = location.pathname === "/admin_dashboard";
 
@@ -44,9 +38,12 @@ export const AppRoutes: React.FC = () => {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/order" element={<BuyPage />} />
-        <Route path="/admin_dashboard" element={<DashboardPage />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/admin_dashboard" element={<DashboardPage />} />
+          <Route path="/user" element={<UserPage />} />
+        </Route>
+      
 
-        {isAuthenticated && <Route path="/user" element={<UserPage />} />}
         <Route path="*" element={<NotFound />} />
       </Routes>
       {isDashboardPage ? null : <Footer />}

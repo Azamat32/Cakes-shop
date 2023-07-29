@@ -1,0 +1,21 @@
+
+.user-page{
+    margin-bottom: 200px;
+    .user_header {
+        display: flex;
+        gap: 100px;
+        .user_headerGroup {
+          span {
+            font-size: 0.875rem;
+            color: #989898;
+          }
+        }
+      }
+}
+
+
+.title {
+  h1 {
+    color: rgb(233, 131, 170);
+  }
+}

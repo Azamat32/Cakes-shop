@@ -15,6 +15,7 @@
     width: 65%;
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
   }
   .nav_links,
   .nav_UI {
@@ -73,6 +74,8 @@
 
       a {
         display: flex;
+        cursor: pointer;
+
         gap: 15px;
         margin-bottom: 10px;
         color: rgb(233, 131, 170);
@@ -85,7 +88,7 @@
     }
   }
 }
-.nav_backet_adaptive{
+.nav_backet_adaptive {
   display: none;
 }
 .nav_burger_btn {
@@ -154,8 +157,7 @@
 
   &.visible {
     animation: fadeIn 0.4s forwards;
-  transition: opacity 0.4s ease-in-out, visibility 0s linear 0.4s; // Apply transition to all changes
-
+    transition: opacity 0.4s ease-in-out, visibility 0s linear 0.4s; // Apply transition to all changes
   }
 }
 
@@ -165,19 +167,19 @@
     visibility: visible;
   }
 }
-.adaptive_side{
+.adaptive_side {
   display: none;
 }
 @media (max-width: 720px) {
-  .nav_backet{
+  .nav_backet {
     display: none;
   }
-  .adaptive_side{
+  .adaptive_side {
     display: flex;
     gap: 20px;
     align-items: center;
   }
-  .nav_backet_adaptive{
+  .nav_backet_adaptive {
     display: block;
   }
   .nav_burger_btn {

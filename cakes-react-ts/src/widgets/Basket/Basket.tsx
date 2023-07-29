@@ -3,7 +3,7 @@ import "./Basket.scss";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import {NavLink} from "react-router-dom"
-import { BasketState } from "../../store/store"; // Replace with the correct path to your store.tsx file
+import { RootState } from "../../store/store"; // Replace with the correct path to your store.tsx file
 
 type BasketProps = {
   BasketState: boolean;
@@ -12,7 +12,7 @@ type BasketProps = {
 
 const Basket = (props: BasketProps) => {
   const { BasketState, onCloseBasket } = props;
-  const basketItems = useSelector((state: BasketState) => state.items);
+  const basketItems = useSelector((state: RootState) => state.basket.items);
   const [isBasketOpen] = useState(true); // New state to manage basket visibility
 
   return (
@@ -32,8 +32,8 @@ const Basket = (props: BasketProps) => {
               {basketItems.length === 0 ? (
                 <p className="nothing">К сожаление вы еще ничего не купили</p>
               ) : (
-                basketItems.map((item) => (
-                  <div className="Basket_items">
+                basketItems.map((item , index) => (
+                  <div key = {index} className="Basket_items">
                     <div className="Basket_item">
                       <div className="basket_item_inner">
                         <div className="basket_item_left">
