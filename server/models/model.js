@@ -118,7 +118,17 @@ const Payment = sequelize.define("Payment", {
     allowNull: false,
   },
 });
-
+const Category = sequelize.define("Category", {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
 // User-Order association (One-to-Many)
 User.hasMany(Order, { foreignKey: "user_id" });
 Order.belongsTo(User, { foreignKey: "user_id" });
@@ -139,6 +149,14 @@ BasketItems.belongsTo(Basket, { foreignKey: "basket_id" });
 BasketItems.belongsTo(Product, { foreignKey: "product_id" });
 Product.hasMany(BasketItems, { foreignKey: "product_id" });
 
+Product.belongsToMany(Category, {
+  through: "ProductCategory", // Name of the join table
+  foreignKey: "product_id",
+});
+Category.belongsToMany(Product, {
+  through: "ProductCategory", // Name of the join table
+  foreignKey: "category_id",
+});
 module.exports = {
   User,
   Basket,
@@ -146,4 +164,5 @@ module.exports = {
   Order,
   Payment,
   Product,
+  Category,
 };

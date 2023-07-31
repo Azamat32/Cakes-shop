@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { Product } = require("../models/model");
+const { Product, Category } = require("../models/model");
 const { Sequelize } = require("sequelize");
 
 const multer = require("multer");
@@ -25,6 +25,7 @@ async function getAllWithSequentialIds() {
         "name",
         "type",
         "price",
+        "img",
       ],
     });
     return products;
@@ -76,3 +77,37 @@ exports.postOne = [
     }
   },
 ];
+
+exports.addCategory = [
+  isAdmin,
+  async (req, res, next) => {
+    try {
+      const { CatalogName } = req.body;
+
+      if (!CatalogName) {
+        return res.status(400).json({ error: "All fields are required" });
+      }
+      let name = CatalogName;
+      const newCatalog = await Category.create({
+        name,
+      });
+
+      res.json(newCatalog);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Failed to add product" });
+    }
+  },
+];
+
+exports.getAllCategories = async (req, res, next) => {
+  try {
+    const categories = await Category.findAll({
+      attributes: ["id", "name"],
+    });
+    res.json(categories);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Failed to fetch categories" });
+  }
+};

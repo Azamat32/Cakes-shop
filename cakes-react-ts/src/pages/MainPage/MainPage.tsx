@@ -1,31 +1,47 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import axios from "axios"
 import Slider from "../../widgets/Slider/Slider";
 import Examle1 from "../../assets/ExampleGallery/conditer1.jpg";
 import Examle2 from "../../assets/ExampleGallery/conditer2.jpg";
-import milk3 from "../../assets/ExampleGallery/milk3.jpeg";
-import milk4 from "../../assets/ExampleGallery/milk4.jpeg";
+
 
 import Examle3 from "../../assets/ExampleGallery/conditer3.jpg";
 import Examle4 from "../../assets/ExampleGallery/conditer4.jpg";
 
-import cake2 from "../../assets/ExampleGallery/cake2.jpg";
-import pie1 from "../../assets/ExampleGallery/pie1.jpg";
-import other1 from "../../assets/ExampleGallery/other1.jpg";
-import other2 from "../../assets/ExampleGallery/other2.jpg";
-import other3 from "../../assets/ExampleGallery/other3.jpg";
-import other4 from "../../assets/ExampleGallery/other4.jpg";
-import other5 from "../../assets/ExampleGallery/other5.jpg";
-import other6 from "../../assets/ExampleGallery/other6.jpg";
 
-import cake4 from "../../assets/ExampleGallery/cake4.jpg";
 
 import "./MainPage.scss";
 import CatalogItem from "../../widgets/CatalogItem/CatalogItem";
+import Loader from "../../widgets/Loader/Loader";
 type Props = {};
+interface Product {
+  img: string;
+  name: string;
+  price: number;
+  type: string;
+}
+
 
 const MainPage = (_props: Props) => {
-  const [activeTab, setActiveTab] = useState("Формы для запекания");
+  const [activeTab, setActiveTab] = useState("Форма для выпечки");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Make an API request to fetch the products from the backend
+    
+    axios.get("http://localhost:5000/api/products/catalog")
+      .then((response) => {
+        setProducts(response.data);
+
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsLoading(false);
+      });
+  }, []);
+
   const handleTabClick = (role: string) => {
     setActiveTab(role);
   };
@@ -36,84 +52,17 @@ const MainPage = (_props: Props) => {
     { img: Examle3 },
     { img: Examle4 },
   ];
-  const Catalog = [
-    {
-      itemImage: cake2,
-      title: "Test2",
-      price: 2300,
-      role: "Молочные продукты",
-    },
-    {
-      itemImage: milk3,
-      title: "Test2",
-      price: 2300,
-      role: "Молочные продукты",
-    },
-    {
-      itemImage: milk4,
-      title: "Test2",
-      price: 2300,
-      role: "Молочные продукты",
-    },
+ 
 
-    {
-      itemImage: cake4,
-      title: "Test4",
-      price: 2300,
-      role: "Украшения",
-    },
-    {
-      itemImage: pie1,
-      title: "Test1",
-      price: 2300,
-      role: "Продукты для Коктелей",
-    },
-
-    {
-      itemImage: other1,
-      title: "Test1",
-      price: 2300,
-      role: "Инструменты для кондитера",
-    },
-    {
-      itemImage: other2,
-      title: "Test1",
-      price: 2300,
-      role: "Формы для запекания",
-    },
-    {
-      itemImage: other3,
-      title: "Test1",
-      price: 2300,
-      role: "Формы для запекания",
-    },
-    {
-      itemImage: other4,
-      title: "Test1",
-      price: 2300,
-      role: "Формы для запекания",
-    },
-    {
-      itemImage: other5,
-      title: "Test1",
-      price: 2300,
-      role: "Формы для запекания",
-    },
-    {
-      itemImage: other6,
-      title: "Test1",
-      price: 2300,
-      role: "Формы для запекания",
-    },
-  ];
-  const filteredItems = Catalog.filter((item) => item.role === activeTab);
+  
+  const filteredItems = products.filter((item) => item.type === activeTab);
   const catalogItemsRendered = filteredItems.map((item, index) => (
     <CatalogItem
       key={index}
-      itemImage={item.itemImage}
-      title={item.title}
+      itemImage={`http://localhost:5000/${item.img}`} 
+      title={item.name}
       price={item.price}
-      role={item.role}
+      role={item.type}
     />
   ));
 
@@ -126,10 +75,10 @@ const MainPage = (_props: Props) => {
           <div className="catalog_wrap">
             <div className="catalog_tabs">
               <button
-                className={activeTab === "Формы для запекания" ? "active" : ""}
-                onClick={() => handleTabClick("Формы для запекания")}
+                className={activeTab === "Форма для выпечки" ? "active" : ""}
+                onClick={() => handleTabClick("Форма для выпечки")}
               >
-                Формы для запекания
+                Форма для выпечки
               </button>
               <button
                 className={activeTab === "Молочные продукты" ? "active" : ""}
@@ -146,8 +95,8 @@ const MainPage = (_props: Props) => {
                 Инструменты для кондитера
               </button>
               <button
-                className={activeTab === "Украшения" ? "active" : ""}
-                onClick={() => handleTabClick("Украшения")}
+                className={activeTab === "Украшения для торта" ? "active" : ""}
+                onClick={() => handleTabClick("Украшения для торта")}
               >
                 Украшения
               </button>
@@ -161,7 +110,14 @@ const MainPage = (_props: Props) => {
                 Продукты для Коктелей
               </button>
             </div>
-            <div className="catalog_content">{catalogItemsRendered}</div>
+            <div className="catalog_content">
+              
+            {isLoading ? (
+                <Loader />
+              ) : (
+                /* Display the catalog items when data is loaded */
+                catalogItemsRendered
+              )}</div>
           </div>
         </div>
       </div>

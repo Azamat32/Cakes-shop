@@ -83,7 +83,7 @@ const DashboardPage = () => {
             className={activeTab === "add_moderators" ? "active" : ""}
             onClick={() => handleTabClick("add_moderators")}
           >
-            Добавить новых модераторов
+            Добавить новую категорию
           </button>
         </div>
       </div>
