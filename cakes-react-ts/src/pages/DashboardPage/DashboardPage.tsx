@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./DashboardPage.scss";
 import UserProfile from "./UserProfile/UserProfile";
-import AllCategories from "./AllCategories/AllCategories";
 import AllProducts from "./AllProducts/AllProducts";
 import AddNewProducts from "./AddNewProducts/AddNewProducts";
 import EditProductDescription from "./EditProductDescription/EditProductDescription";
@@ -19,8 +18,7 @@ const DashboardPage = () => {
     switch (activeTab) {
       case "profile":
         return <UserProfile />;
-      case "categories":
-        return <AllCategories />;
+
       case "products":
         return <AllProducts />;
       case "add_products":
@@ -49,12 +47,7 @@ const DashboardPage = () => {
           >
             Профиль
           </button>
-          <button
-            className={activeTab === "categories" ? "active" : ""}
-            onClick={() => handleTabClick("categories")}
-          >
-            Все категории продуктов
-          </button>
+
           <button
             className={activeTab === "products" ? "active" : ""}
             onClick={() => handleTabClick("products")}

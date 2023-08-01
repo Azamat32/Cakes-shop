@@ -2,8 +2,9 @@ const { Router } = require("express");
 const { Product, Category } = require("../models/model");
 const { Sequelize } = require("sequelize");
 
-const multer = require("multer");
-const { v4: uuidv4 } = require("uuid");
+const fs = require("fs");
+const path = require("path");
+const uuid = require("uuid");
 const isAdmin = require("../middleware/isAdminMiddleware");
 exports.getAll = async (req, res, next) => {
   try {
@@ -33,22 +34,8 @@ async function getAllWithSequentialIds() {
     throw error;
   }
 }
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./static/"); // Change the path to where you want to store the images
-  },
-  filename: function (req, file, cb) {
-    const uniqueFilename = uuidv4(); // Generate a unique filename using UUID
-    cb(null, uniqueFilename + "-" + file.originalname); // Append the original filename to the UUID
-  },
-});
-const upload = multer({ storage: storage });
-const uploadImage = upload.single("image");
-
 exports.postOne = [
   isAdmin,
-  uploadImage, // Use the uploadImage middleware before calling the controller function
   async (req, res, next) => {
     try {
       // Assuming you will send the product details in the request body
@@ -58,16 +45,21 @@ exports.postOne = [
       if (!name || !type || !price) {
         return res.status(400).json({ error: "All fields are required" });
       }
-      // Access the imag  e file using req.file
-      const imageFilename = req.file.filename;
 
-      console.log(imageFilename);
+      // Access the image file using req.files
+      const { image } = req.files;
+      const uniqueFilename = uuid.v4() + "-" + image.name;
+
+      // Move the uploaded image to the 'static' directory
+      const imagePath = path.join(__dirname, '..', 'static', uniqueFilename);
+      fs.writeFileSync(imagePath, image.data);
+
       // Create the product in the database with the image data
       const newProduct = await Product.create({
         name,
         type,
         price,
-        img: imageFilename, // Save the image binary data in the database
+        img: uniqueFilename, // Save the image filename in the database
       });
 
       res.json(newProduct);

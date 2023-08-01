@@ -20,13 +20,17 @@ interface Product {
   price: number;
   type: string;
 }
-
+interface Category {
+  id: number;
+  name: string;
+}
 
 const MainPage = (_props: Props) => {
   const [activeTab, setActiveTab] = useState("Форма для выпечки");
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [categories, setCategories] = useState<Category[]>([]);
+ 
   useEffect(() => {
     // Make an API request to fetch the products from the backend
     
@@ -42,8 +46,18 @@ const MainPage = (_props: Props) => {
       });
   }, []);
 
-  const handleTabClick = (role: string) => {
-    setActiveTab(role);
+
+  useEffect(() => {
+    // Fetch the categories from the backend
+    axios
+      .get("http://localhost:5000/api/products/categories")
+      .then((response) => {
+        setCategories(response.data);
+      });
+  }, []);
+
+  const handleTabClick = (categoryName: string) => {
+    setActiveTab(categoryName);
   };
 
   const images = [
@@ -74,41 +88,15 @@ const MainPage = (_props: Props) => {
           <h1>Наш каталог</h1>
           <div className="catalog_wrap">
             <div className="catalog_tabs">
-              <button
-                className={activeTab === "Форма для выпечки" ? "active" : ""}
-                onClick={() => handleTabClick("Форма для выпечки")}
-              >
-                Форма для выпечки
-              </button>
-              <button
-                className={activeTab === "Молочные продукты" ? "active" : ""}
-                onClick={() => handleTabClick("Молочные продукты")}
-              >
-                Молочные продукты
-              </button>
-              <button
-                className={
-                  activeTab === "Инструменты для кондитера" ? "active" : ""
-                }
-                onClick={() => handleTabClick("Инструменты для кондитера")}
-              >
-                Инструменты для кондитера
-              </button>
-              <button
-                className={activeTab === "Украшения для торта" ? "active" : ""}
-                onClick={() => handleTabClick("Украшения для торта")}
-              >
-                Украшения
-              </button>
-
-              <button
-                className={
-                  activeTab === "Продукты для Коктелей" ? "active" : ""
-                }
-                onClick={() => handleTabClick("Продукты для Коктелей")}
-              >
-                Продукты для Коктелей
-              </button>
+            {categories.map((category) => (
+                <button
+                  key={category.id}
+                  className={activeTab === category.name ? "active" : ""}
+                  onClick={() => handleTabClick(category.name)}
+                >
+                  {category.name}
+                </button>
+              ))}
             </div>
             <div className="catalog_content">
               

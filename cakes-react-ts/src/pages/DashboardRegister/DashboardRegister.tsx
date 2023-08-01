@@ -26,7 +26,7 @@ const DashboardRegister = (_props: Props) => {
       .then((response) => {
         dispatch(setAdmin());
         const token = response.data.token;
-        localStorage.setItem("token", token);
+        localStorage.setItem("tokenAdmin", token);
 
         setIsLoading(false);
         navigate("/admin_dashboard");

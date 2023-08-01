@@ -1,0 +1,35 @@
+// AddProduct.scss
+
+/* ... (existing styles for the component) */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ccc;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    td:last-child {
+      text-align: center;
+    }
+    button {
+      background-color: #ff3333;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      &:hover {
+        background-color: #cc0000;
+      }
+    }
+  }
+  
+  /* ... (more styles for the component if needed) */
+  

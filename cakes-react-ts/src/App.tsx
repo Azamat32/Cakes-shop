@@ -1,14 +1,17 @@
 import { AppRoutes } from "./routes/AppRoutes";
-import {BrowserRouter} from "react-router-dom"
-import { setLoggedIn } from './store/reducers/authReducer';
+import { BrowserRouter } from "react-router-dom";
+import { setLoggedIn } from "./store/reducers/authReducer";
 import { useDispatch } from "react-redux";
 import jwtDecode from "jwt-decode";
 import { useEffect } from "react";
+import { setAdmin } from "./store/reducers/authReducer";
 
 import "./App.css";
 function App() {
   const dispatch = useDispatch();
   const token = localStorage.getItem("authToken");
+  const tokenAdmin = localStorage.getItem("tokenAdmin");
+
   useEffect(() => {
     if (token) {
       try {
@@ -29,13 +32,20 @@ function App() {
         console.error("Error decoding token:", error);
       }
     }
-  }, [dispatch, token]);
 
+    if (tokenAdmin) {
+      try {
+        dispatch(setAdmin());
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, [dispatch, token]);
 
   return (
     <>
-    <BrowserRouter>
-      <AppRoutes />
+      <BrowserRouter>
+        <AppRoutes />
       </BrowserRouter>
     </>
   );

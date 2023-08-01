@@ -8,6 +8,8 @@ interface Category {
   id: number;
   name: string;
 }
+
+
 const AddNewProducts = (_props: Props) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -18,27 +20,33 @@ const AddNewProducts = (_props: Props) => {
 
   useEffect(() => {
     // Fetch the categories from the backend
-    axios.get("http://localhost:5000/api/products/categories").then((response) => {
-      setCategories(response.data);
-    });
+    axios
+      .get("http://localhost:5000/api/products/categories")
+      .then((response) => {
+        setCategories(response.data);
+      });
   }, []);
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Create a FormData object to send the form data including the image file
+    const token = localStorage.getItem("token");
     const formData = new FormData();
     formData.append("name", name);
     formData.append("price", price);
     formData.append("image", image as Blob);
     formData.append("type", type);
-
+    console.log(formData);
+    
     try {
       // Make a POST request to the backend endpoint
-      const response = await axios.post("http://localhost:5000/api/products/catalog", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/products/catalog",
+        formData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
 
       // If the request is successful, you can handle the response here (e.g., show a success message)
       console.log(response.data);
@@ -51,7 +59,7 @@ const AddNewProducts = (_props: Props) => {
   return (
     <div className="addProduct">
       <h1>Добавить новый товар</h1>
-      <form onSubmit={handleFormSubmit} className="addProductForm">
+      <form onSubmit={handleFormSubmit} className="addProductForm" >
         <div className="inputGroup">
           <label>Имя товара</label>
           <input
@@ -74,6 +82,8 @@ const AddNewProducts = (_props: Props) => {
           <label>Картинка</label>
           <input
             type="file"
+            name="image"
+            
             onChange={(e) => setImage(e.target.files?.[0] || null)}
           />
         </div>
