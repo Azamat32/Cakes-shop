@@ -22,6 +22,7 @@ const authSlice = createSlice({
     isRegistered: false,
     isAdmin: false,
     user: null,
+    
   } as AuthState, // Provide the AuthState type here
   reducers: {
     setAdmin: (state) => {
@@ -34,8 +35,15 @@ const authSlice = createSlice({
     setRegistered: (state) => {
       state.isRegistered = true;
     },
+    logoutUser: (state) => {
+      state.isLoggedIn = false;
+      state.user = null;
+    },
+    logoutAdmin: (state) => {
+      state.isAdmin = false;
+    },
   },
 });
 
-export const { setLoggedIn, setRegistered, setAdmin } = authSlice.actions;
+export const { setLoggedIn, setRegistered, setAdmin , logoutUser, logoutAdmin } = authSlice.actions;
 export default authSlice.reducer;

@@ -4,6 +4,7 @@ const twilio = require("twilio");
 const { PhoneNumber } = require("twilio").twiml;
 const { User, Basket } = require("../models/model");
 const isAuthenticated = require("../middleware/isAuthenticated");
+const isAdmin = require("../middleware/isAdminMiddleware");
 
 require("dotenv").config();
 
@@ -202,10 +203,8 @@ exports.adminLogin = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
-    // Admin user authenticated successfully
-    // Create a JWT token with role "admin"
     const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
-      expiresIn: "1h", // Set the token expiry to 1 hour (you can adjust this as needed)
+      expiresIn: "1h",
     });
 
     return res.status(200).json({ message: "Admin login successful", token });
@@ -214,6 +213,26 @@ exports.adminLogin = async (req, res, next) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.getAllUsers = [
+  isAdmin,
+  async (req, res, next) => {
+    try {
+      const users = await User.findAll();
+
+      // If there are no users, return an empty array
+      if (!users || users.length === 0) {
+        return res.status(200).json([]);
+      }
+
+      // If users exist, return the array of users
+      res.status(200).json(users);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Server error" });
+    }
+  },
+];
 
 async function sendVerificationCodeViaTwilio(phoneNumber, verificationCode) {
   try {

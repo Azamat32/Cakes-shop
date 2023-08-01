@@ -14,7 +14,7 @@ const AddNewProducts = (_props: Props) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState<File | null>(null);
-  const [type, setType] = useState("");
+  const [type, setType] = useState<string>(""); // Set a default value for type
 
   const [categories, setCategories] = useState<Category[]>([]);
 
@@ -24,17 +24,17 @@ const AddNewProducts = (_props: Props) => {
       .get("http://localhost:5000/api/products/categories")
       .then((response) => {
         setCategories(response.data);
+        setType(response.data[0]?.name || "");
       });
   }, []);
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("tokenAdmin");
     const formData = new FormData();
     formData.append("name", name);
     formData.append("price", price);
     formData.append("image", image as Blob);
     formData.append("type", type);
-    console.log(formData);
     
     try {
       // Make a POST request to the backend endpoint
@@ -48,8 +48,6 @@ const AddNewProducts = (_props: Props) => {
         }
       );
 
-      // If the request is successful, you can handle the response here (e.g., show a success message)
-      console.log(response.data);
     } catch (error) {
       // If there's an error, you can handle it here (e.g., show an error message)
       console.error(error);

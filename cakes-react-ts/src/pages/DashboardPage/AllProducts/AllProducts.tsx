@@ -26,10 +26,13 @@ const AllProducts = (_props: Props) => {
   }, []);
 
   const handleDeleteProduct = async (productId: number) => {
+    const token = localStorage.getItem("tokenAdmin");
+
     try {
       // Make a DELETE request to remove the product
       await axios.delete(
-        `http://localhost:5000/api/products/catalog/${productId}`
+        `http://localhost:5000/api/products/catalog/${productId}`, 
+        {headers: { Authorization: token}}
       );
 
       // Update the products state by filtering out the deleted product

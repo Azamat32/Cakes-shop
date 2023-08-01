@@ -51,7 +51,7 @@ exports.postOne = [
       const uniqueFilename = uuid.v4() + "-" + image.name;
 
       // Move the uploaded image to the 'static' directory
-      const imagePath = path.join(__dirname, '..', 'static', uniqueFilename);
+      const imagePath = path.join(__dirname, "..", "static", uniqueFilename);
       fs.writeFileSync(imagePath, image.data);
 
       // Create the product in the database with the image data
@@ -92,6 +92,22 @@ exports.addCategory = [
   },
 ];
 
+exports.deleteCategory = [
+  isAdmin,
+  async (req, res, next) => {
+    try {
+      const categoryId = req.params.id;
+      // Find the product by ID and delete it from the database
+      await Category.destroy({ where: { id: categoryId } });
+
+      // Send a response indicating success
+      res.json({ message: "Product deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+];
 exports.getAllCategories = async (req, res, next) => {
   try {
     const categories = await Category.findAll({
@@ -103,3 +119,20 @@ exports.getAllCategories = async (req, res, next) => {
     res.status(500).json({ error: "Failed to fetch categories" });
   }
 };
+
+exports.delete = [
+  isAdmin,
+  async (req, res) => {
+    try {
+      const productId = req.params.id;
+      // Find the product by ID and delete it from the database
+      await Product.destroy({ where: { id: productId } });
+
+      // Send a response indicating success
+      res.json({ message: "Product deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+];

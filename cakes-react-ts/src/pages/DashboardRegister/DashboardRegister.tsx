@@ -11,12 +11,10 @@ const DashboardRegister = (_props: Props) => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(""); // New state variable to store the error message
   const dispatch = useDispatch();
 
   const handleRegister = () => {
-    setIsLoading(true);
     setError(""); // Clear any previous error message before making the request
     axios
       .post("http://localhost:5000/api/user/admin", {
@@ -28,12 +26,10 @@ const DashboardRegister = (_props: Props) => {
         const token = response.data.token;
         localStorage.setItem("tokenAdmin", token);
 
-        setIsLoading(false);
         navigate("/admin_dashboard");
       })
       .catch(() => {
         setError("Invalid username or password"); // Set the error message based on the response
-        setIsLoading(false);
       });
   };
 

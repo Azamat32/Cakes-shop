@@ -1,13 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import "./CatalogsItem.scss";
+
 type Props = {};
+
 interface Catalog {
   id: number;
   name: string;
 }
+
 const AddNewModerators = (props: Props) => {
   const [catalogName, setCatalogName] = useState("");
   const [categories, setCategories] = useState<Catalog[]>([]);
+
   const fetchCategories = () => {
     axios
       .get("http://localhost:5000/api/products/categories")
@@ -18,6 +23,7 @@ const AddNewModerators = (props: Props) => {
         console.error(error);
       });
   };
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -29,7 +35,7 @@ const AddNewModerators = (props: Props) => {
       .post(
         "http://localhost:5000/api/products/categories",
         {
-          CatalogName: catalogName, 
+          CatalogName: catalogName,
         },
         {
           headers: {
@@ -43,22 +49,26 @@ const AddNewModerators = (props: Props) => {
       .catch(() => {});
   };
 
+  const handleDeleteCatalog = (catalogId: number) => {
+    const token = localStorage.getItem("tokenAdmin");
+
+    axios
+      .delete(`http://localhost:5000/api/products/categories/${catalogId}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(() => {
+        fetchCategories();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   return (
     <div className="catalog">
       <div className="container">
         <div className="catalog_inner">
-          <div className="catalog_all">
-            <title>
-              <h1>Все виды товаров</h1>
-            </title>
-            <div className="catalog_wrap">
-              <ul>
-                {categories.map((category) => (
-                  <li key={category.id}>{category.name}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
           <div className="catalog_post">
             <input
               type="text"
@@ -67,9 +77,36 @@ const AddNewModerators = (props: Props) => {
               onChange={(e) => setCatalogName(e.target.value)}
             />
             <button type="submit" onClick={handlePostCatalog}>
-              {" "}
               Добавить
             </button>
+          </div>
+          <div className="catalog_all">
+            <h1>Все виды товаров</h1>
+            <div className="catalog_wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {categories.map((category) => (
+                    <tr key={category.id}>
+                      <td>{category.id}</td>
+                      <td>{category.name}</td>
+                      <td>
+                        <button
+                          onClick={() => handleDeleteCatalog(category.id)}
+                        >
+                          Удалить
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

@@ -1,14 +1,13 @@
 import { useState } from "react";
 import "./DashboardPage.scss";
-import UserProfile from "./UserProfile/UserProfile";
 import AllProducts from "./AllProducts/AllProducts";
 import AddNewProducts from "./AddNewProducts/AddNewProducts";
-import EditProductDescription from "./EditProductDescription/EditProductDescription";
 import AllUsers from "./AllUsers/AllUsers";
 import AddNewModerators from "./AddNewModerators/AddNewModerators";
+import { NavLink } from "react-router-dom";
 
 const DashboardPage = () => {
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useState("products");
 
   const handleTabClick = (tab: any) => {
     setActiveTab(tab);
@@ -16,15 +15,11 @@ const DashboardPage = () => {
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case "profile":
-        return <UserProfile />;
-
       case "products":
         return <AllProducts />;
       case "add_products":
         return <AddNewProducts />;
-      case "edit_description":
-        return <EditProductDescription />;
+
       case "users":
         return <AllUsers />;
       case "add_moderators":
@@ -41,12 +36,7 @@ const DashboardPage = () => {
           <h1>Админ</h1>
         </div>
         <div className="sidebar_list">
-          <button
-            className={activeTab === "profile" ? "active" : ""}
-            onClick={() => handleTabClick("profile")}
-          >
-            Профиль
-          </button>
+         
 
           <button
             className={activeTab === "products" ? "active" : ""}
@@ -60,12 +50,7 @@ const DashboardPage = () => {
           >
             Добавить новые продукты
           </button>
-          <button
-            className={activeTab === "edit_description" ? "active" : ""}
-            onClick={() => handleTabClick("edit_description")}
-          >
-            Изменить описания продукта
-          </button>
+          
           <button
             className={activeTab === "users" ? "active" : ""}
             onClick={() => handleTabClick("users")}
@@ -77,6 +62,11 @@ const DashboardPage = () => {
             onClick={() => handleTabClick("add_moderators")}
           >
             Добавить новую категорию
+          </button>
+          <button>
+            <NavLink to="/">
+              На главную
+            </NavLink>
           </button>
         </div>
       </div>
