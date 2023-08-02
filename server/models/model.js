@@ -56,24 +56,29 @@ const Basket = sequelize.define("Basket", {
     primaryKey: true,
     autoIncrement: true,
   },
-
-  created_at: {
-    type: DataTypes.DATE,
+  productName: {
+    type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: Sequelize.NOW,
+    defaultValue: "Default Product Name",
   },
-});
 
-const BasketItems = sequelize.define("BasketItems", {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
+  price: {
+    type: DataTypes.DECIMAL,
+    allowNull: false,
+  },
+  img: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   quantity: {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 1,
+  },
+  createdAt: {
+    type: Sequelize.DATE,
+    allowNull: false,
+    defaultValue: Sequelize.NOW,
   },
 });
 
@@ -141,14 +146,6 @@ Payment.belongsTo(Order, { foreignKey: "order_id" });
 User.hasMany(Basket, { foreignKey: "user_id" });
 Basket.belongsTo(User, { foreignKey: "user_id" });
 
-// Basket-BasketItems association (One-to-Many)
-Basket.hasMany(BasketItems, { foreignKey: "basket_id" });
-BasketItems.belongsTo(Basket, { foreignKey: "basket_id" });
-
-// BasketItems-Product association (Many-to-One)
-BasketItems.belongsTo(Product, { foreignKey: "product_id" });
-Product.hasMany(BasketItems, { foreignKey: "product_id" });
-
 Product.belongsToMany(Category, {
   through: "ProductCategory", // Name of the join table
   foreignKey: "product_id",
@@ -160,7 +157,6 @@ Category.belongsToMany(Product, {
 module.exports = {
   User,
   Basket,
-  BasketItems,
   Order,
   Payment,
   Product,

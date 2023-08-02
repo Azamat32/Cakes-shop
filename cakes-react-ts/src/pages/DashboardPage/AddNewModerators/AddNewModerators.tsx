@@ -29,8 +29,9 @@ const AddNewModerators = (props: Props) => {
   }, []);
 
   const handlePostCatalog = () => {
-    const token = localStorage.getItem("token");
-
+    const token = localStorage.getItem("tokenAdmin");
+    console.log(token);
+    
     axios
       .post(
         "http://localhost:5000/api/products/categories",
@@ -86,14 +87,12 @@ const AddNewModerators = (props: Props) => {
               <table>
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Название</th>
                   </tr>
                 </thead>
                 <tbody>
                   {categories.map((category) => (
                     <tr key={category.id}>
-                      <td>{category.id}</td>
                       <td>{category.name}</td>
                       <td>
                         <button

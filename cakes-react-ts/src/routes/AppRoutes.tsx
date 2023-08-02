@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect , Suspense } from "react";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import MainPage from "../pages/MainPage/MainPage";
 import UserPage from "../pages/UserPage/UserPage";
@@ -15,19 +15,9 @@ import DashboardRegister from "../pages/DashboardRegister/DashboardRegister";
 
 
 export const AppRoutes: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    // Simulate an asynchronous data fetching or any other async operation
-    setTimeout(() => {
-      setIsLoading(false); // Set isLoading to false when the data is fetched
-    }, 2000); // Simulating a 2-second delay, replace with your actual loading logic
-  }, []);
-
+  
   const location = useLocation();
 
-  if (isLoading) {
-    return <Loader />;
-  }
 
   // Check if the current location is the DashboardPage
   const isDashboardPage = location.pathname === "/admin_dashboard";
@@ -35,6 +25,8 @@ export const AppRoutes: React.FC = () => {
   return (
     <>
       {isDashboardPage ? null : <Navbar />}
+    <Suspense fallback={<Loader />}>
+
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/about" element={<AboutPage />} />
@@ -52,6 +44,7 @@ export const AppRoutes: React.FC = () => {
       
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </Suspense>
       {isDashboardPage ? null : <Footer />}
     </>
   );

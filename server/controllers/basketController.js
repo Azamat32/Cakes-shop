@@ -1,4 +1,3 @@
-const { Router } = require("express");
 const isAuthenticated = require("../middleware/isAuthenticated");
 const { Basket } = require("../models/model");
 
@@ -7,18 +6,19 @@ exports.addOne = [
   async (req, res, next) => {
     try {
       // Assuming the request body contains the necessary product details
-      const { title, price, itemImage, role } = req.body;
-
+      const { title, price, img, role } = req.body;
+      console.log("req.body:", req.body);
       // Save the product details to the Basket table in the database
       const newBasketItem = await Basket.create({
-        title,
+        productName: title,
         price,
-        itemImage,
+        img,
         role,
       });
 
       res.json(newBasketItem);
     } catch (error) {
+      console.log(error);
       res.status(500).json({ error: "Failed to add product to basket" });
     }
   },

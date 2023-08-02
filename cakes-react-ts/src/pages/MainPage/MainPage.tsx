@@ -53,6 +53,9 @@ const MainPage = (_props: Props) => {
       .get("http://localhost:5000/api/products/categories")
       .then((response) => {
         setCategories(response.data);
+        if (response.data.length > 0) {
+          setActiveTab(response.data[0].name);
+        }
       });
   }, []);
 
