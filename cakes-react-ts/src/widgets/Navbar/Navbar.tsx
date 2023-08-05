@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLoggedIn } from "../../store/reducers/authReducer";
@@ -43,7 +43,13 @@ const Navbar = () => {
   const [isBurgerActive, setIsBurgerActive] = useState(false);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const isRegistered = useSelector((state: RootState) => state.auth.isRegistered);
-  
+  const [basketItemCount, setBasketItemCount] = useState(0);
+  const basketItems = useSelector((state:any) => state.basket.basketItems);
+
+  useEffect(() => {
+    // Update the basket item count whenever the basket items change
+    setBasketItemCount(basketItems.length);
+  }, [basketItems]);
 
   const toggleLanguageDropdown = () => setIsLanguageDropdownOpen(!isLanguageDropdownOpen);
   const toggleUserDropdown = () => setIsUserDropdownOpen(!isUserDropdownOpen);
@@ -88,7 +94,36 @@ const Navbar = () => {
       ) : null}
     </div>
   );
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
 
+      // Check if the click occurred outside of the UserDropdown and LanguageDropdown elements
+      if (
+        !target.closest(".nav_user") &&
+        !target.closest(".nav_language") &&
+        isUserDropdownOpen
+      ) {
+        setIsUserDropdownOpen(false);
+      }
+
+      if (
+        !target.closest(".nav_language") &&
+        !target.closest(".nav_user") &&
+        isLanguageDropdownOpen
+      ) {
+        setIsLanguageDropdownOpen(false);
+      }
+    };
+
+    // Add the event listener when the component mounts
+    document.addEventListener("click", handleOutsideClick);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [isUserDropdownOpen, isLanguageDropdownOpen]); 
   return (
     <div className={`navbar`}>
       <div className="container">
@@ -113,6 +148,7 @@ const Navbar = () => {
               <LanguageDropdown />
               <div className="nav_backet" onClick={toggleBasket}>
                 <img src={baket} alt="" />
+                {basketItemCount > 0 && <span className="basket-item-count">{basketItemCount}</span>}
               </div>
               <UserDropdown />
             </div>

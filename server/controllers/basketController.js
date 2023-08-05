@@ -1,22 +1,39 @@
 const isAuthenticated = require("../middleware/isAuthenticated");
 const { Basket } = require("../models/model");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 exports.addOne = [
   isAuthenticated, // Use the isAuthenticated middleware here
   async (req, res, next) => {
     try {
       // Assuming the request body contains the necessary product details
-      const { title, price, img, role } = req.body;
+      const { productName, price, img, role, user_id } = req.body;
       console.log("req.body:", req.body);
-      // Save the product details to the Basket table in the database
-      const newBasketItem = await Basket.create({
-        productName: title,
-        price,
-        img,
-        role,
+      const existingProduct = await Basket.findOne({
+        where: {
+          user_id,
+          productName,
+        },
       });
 
-      res.json(newBasketItem);
+      if (existingProduct) {
+        // If the product exists, update the quantity instead of adding a new item
+        existingProduct.quantity += 1;
+        await existingProduct.save();
+        res.json(existingProduct);
+      } else {
+        // If the product does not exist, add it as a new item to the basket
+        const newBasketItem = await Basket.create({
+          user_id,
+          productName,
+          price,
+          img,
+          role,
+        });
+
+        res.json(newBasketItem);
+      }
     } catch (error) {
       console.log(error);
       res.status(500).json({ error: "Failed to add product to basket" });
@@ -24,15 +41,38 @@ exports.addOne = [
   },
 ];
 
+exports.getAll = [
+  isAuthenticated, // Use the isAuthenticated middleware here
+  async (req, res, next) => {
+    try {
+      const token = req.headers.authorization; // Assuming the JWT token is passed in the "Authorization" header
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET); // Replace "your_secret_key" with your actual JWT secret key
+
+      const userId = decodedToken.userId; // Assuming the user ID is stored in the "id" field of the JWT token payload
+      console.log(req.body);
+      // Fetch all products from the Basket model where user_id matches the authenticated user's ID
+      const products = await Basket.findAll({
+        where: {
+          user_id: userId,
+        },
+      });
+
+      res.json(products);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Failed to get products from basket" });
+    }
+  },
+];
 exports.deleteOne = [
   isAuthenticated,
   async (req, res, next) => {
     try {
       // Assuming the request body contains the item ID to be deleted
-      const { itemId } = req.body;
+      const { id } = req.params;
 
       // Find the item in the Basket table by its ID
-      const itemToDelete = await Basket.findOne({ where: { id: itemId } });
+      const itemToDelete = await Basket.findOne({ where: { id: id } });
 
       // If the item is not found, return an error
       if (!itemToDelete) {

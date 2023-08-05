@@ -16,14 +16,14 @@ const DashboardLog = (_props: LoginFormProps) => {
 
   const handleSendVerificationCode = async () => {
     try {
+      const unmaskedPhone = "+" + phone.replace(/\D/g, "");
+
       // Make an API request to the login_phone endpoint on the backend
-      const response = await axios.post(
-        "http://localhost:5000/api/user/login_phone",
-        {
-          phone_number: phone,
-          role: "user",
-        }
-      );
+      await axios.post("http://localhost:5000/api/user/login_phone", {
+        phone_number: unmaskedPhone,
+
+        role: "user",
+      });
 
       // If the verification code is sent successfully, update the state to show the verification code input
       setVerificationCodeSent(true);
@@ -35,11 +35,13 @@ const DashboardLog = (_props: LoginFormProps) => {
 
   const handleVerifyVerificationCode = async () => {
     try {
+      const unmaskedPhone = "+" + phone.replace(/\D/g, "");
+
       // Make an API request to the login_verification endpoint on the backend
       const response = await axios.post(
         "http://localhost:5000/api/user/login_verification",
         {
-          phone_number: phone,
+          phone_number: unmaskedPhone,
           verification_code: verificationCode,
         }
       );
@@ -65,7 +67,14 @@ const DashboardLog = (_props: LoginFormProps) => {
       console.error(error);
     }
   };
+  const formatPhoneNumber = (value: string) => {
+    const phoneNumber = value.replace(/\D/g, "").substring(0, 11);
+    const firstThree = phoneNumber.substring(1, 4);
+    const secondThree = phoneNumber.substring(4, 7);
+    const lastFour = phoneNumber.substring(7, 11);
 
+    return `+7 (${firstThree}) ${secondThree} ${lastFour}`;
+  };
   return (
     <div className="login-form">
       <h2>Логин</h2>
@@ -74,8 +83,8 @@ const DashboardLog = (_props: LoginFormProps) => {
         <div className="login-form_input">
           <input
             type="text"
-            placeholder="Номер телефона"
-            value={phone}
+            placeholder="+7 (___) ___ __ __"
+            value={formatPhoneNumber(phone)}
             onChange={(e) => setPhone(e.target.value)}
           />
           <button onClick={handleSendVerificationCode}>Отправить код</button>

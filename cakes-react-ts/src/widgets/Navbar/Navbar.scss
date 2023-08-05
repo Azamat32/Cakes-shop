@@ -83,8 +83,21 @@
     }
   }
   .nav_backet {
-    img {
-      cursor: pointer;
+    // ... (existing styles)
+    position: relative; /* Ensure the item count is positioned relative to the basket icon */
+    cursor: pointer;
+    .basket-item-count {
+      position: absolute;
+      top: 17px;
+      right: -10px;
+      background-color: rgb(233, 131, 170);
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 0px 8px;
+      border-radius: 50%;
+      min-width: 5px;
+      text-align: center;
     }
   }
 }

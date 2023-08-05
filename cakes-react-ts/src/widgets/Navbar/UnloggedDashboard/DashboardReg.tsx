@@ -1,8 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 
-import { setRegistered } from '../../../store/reducers/authReducer';
+import { setRegistered } from "../../../store/reducers/authReducer";
 type RegistrationFormProps = {};
 
 const DashboardReg = (_props: RegistrationFormProps) => {
@@ -16,19 +16,18 @@ const DashboardReg = (_props: RegistrationFormProps) => {
 
   const handleSendVerificationCode = async () => {
     try {
+      const unmaskedPhone = "+" + phone.replace(/\D/g, "");
+
       // Make an API request to the registration endpoint on the backend
-      const response = await axios.post(
-        "http://localhost:5000/api/user/registration_phone",
-        {
-          phone_number: phone,
-          username: nickname,
-          role: "user",
-        }
-      );
+      await axios.post("http://localhost:5000/api/user/registration_phone", {
+        phone_number: unmaskedPhone,
+
+        username: nickname,
+        role: "user",
+      });
 
       // If the verification code is sent successfully, update the state to show the verification code input
       setVerificationCodeSent(true);
-
     } catch (error) {
       // Handle errors here, such as displaying an error message to the user
       setError("Error sending verification code");
@@ -38,24 +37,29 @@ const DashboardReg = (_props: RegistrationFormProps) => {
 
   const handleVerifyVerificationCode = async () => {
     try {
-      const response = await axios.post(
+      const unmaskedPhone = "+" + phone.replace(/\D/g, "");
+
+      await axios.post(
         "http://localhost:5000/api/user/registration_verification",
         {
-          phone_number: phone,
+          phone_number: unmaskedPhone,
           verification_code: verificationCode,
         }
       );
       dispatch(setRegistered());
-
-      // If verification is successful, you can handle the response here (e.g., show a success message)
-      console.log(response.data);
     } catch (error) {
       // Handle errors here, such as displaying an error message to the user
       setError("Error verifying verification code");
-      console.error(error);
     }
   };
+  const formatPhoneNumber = (value: string) => {
+    const phoneNumber = value.replace(/\D/g, "").substring(0, 11);
+    const firstThree = phoneNumber.substring(1, 4);
+    const secondThree = phoneNumber.substring(4, 7);
+    const lastFour = phoneNumber.substring(7, 11);
 
+    return `+7 (${firstThree}) ${secondThree} ${lastFour}`;
+  };
   return (
     <div className="registration-form">
       <h2>Регистрация</h2>
@@ -71,7 +75,7 @@ const DashboardReg = (_props: RegistrationFormProps) => {
           <input
             type="text"
             placeholder="Phone"
-            value={phone}
+            value={formatPhoneNumber(phone)}
             onChange={(e) => setPhone(e.target.value)}
           />
           <button onClick={handleSendVerificationCode}>Отправить код</button>

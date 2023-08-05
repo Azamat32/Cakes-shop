@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import Loader from "../Loader/Loader";
 import axios from "axios";
 import defaultImage from "../../assets/ExampleGallery/cake1.jpg";
+import jwtDecode from "jwt-decode";
+import { addItemToBasket,fetchBasketItemsAsync } from "../../store/reducers/redusers";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
 
 type ItemProps = {
   key: number;
@@ -14,32 +18,55 @@ type ItemProps = {
 import "./CatalogItem.scss";
 
 const CatalogItem = (props: ItemProps) => {
-  const { price, title, itemImage, role,key } = props;
+  const dispatch = useDispatch();
+  const dispatch2: AppDispatch = useDispatch();
+
+  const { price, title, itemImage, role } = props;
   const [isLoading, setIsLoading] = useState(true);
   const [isAddingToBasket, setIsAddingToBasket] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleBuyButtonClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleBuyButtonClick = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     setIsAddingToBasket(true);
     setError(null);
 
     try {
       const token = localStorage.getItem("authToken");
-      console.log(itemImage);
-      
+      if (!token) {
+        // Handle case when token is missing or expired
+        setIsAddingToBasket(false);
+        setError("User not authenticated");
+        return;
+      }
+      const decodedToken = jwtDecode<any>(token);
+      const userId = decodedToken.userId;
+      const filename = itemImage.substring(itemImage.lastIndexOf("/") + 1);
       await axios.post(
         "http://localhost:5000/api/basket/addToBasket",
         {
-          product_id : key,
-          productName:title,
+          user_id: userId,
+          productName: title,
           price,
-          img:itemImage,
+          img: filename,
           role,
-
         },
         { headers: { Authorization: token } }
       );
+
+      dispatch(
+        addItemToBasket({
+          id: 1, // Replace with the actual id of the item from the backend response
+          img: filename,
+          productName: title,
+          price,
+          quantity: 1, // Initialize the quantity to 1
+        })
+      );
+      dispatch2(fetchBasketItemsAsync());
+
       setIsAddingToBasket(false);
       // Optional: Show a success message to the user if needed
     } catch (error) {

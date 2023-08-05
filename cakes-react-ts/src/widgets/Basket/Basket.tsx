@@ -1,26 +1,59 @@
 import close from "../../assets/Icons/close-svgrepo-com.svg";
 import "./Basket.scss";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import {NavLink} from "react-router-dom"
-import { RootState } from "../../store/store"; // Replace with the correct path to your store.tsx file
+import { Key, useEffect, useState, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setBasketItems, setBasketError } from "../../store/reducers/redusers";
 
+import axios from "axios";
+import { NavLink } from "react-router-dom";
+import BasketItem from "./BasketItem/BasketItem";
 type BasketProps = {
   BasketState: boolean;
   onCloseBasket: () => void;
 };
-
+interface Basket {
+  id: number;
+  img: string;
+  productName: string;
+  price: number;
+  quantity: number;
+}
 const Basket = (props: BasketProps) => {
   const { BasketState, onCloseBasket } = props;
-  const basketItems = useSelector((state: RootState) => state.basket.items);
+  const dispatch = useDispatch();
+
   const [isBasketOpen] = useState(true); // New state to manage basket visibility
+  const basketItems = useSelector((state:any) => state.basket.basketItems);
+  const loading = useSelector((state:any) => state.basket.loading);
+  const error = useSelector((state:any) => state.basket.error);
+
+  useEffect(() => {
+    const fetchBasketItems = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await axios.get(
+          "http://localhost:5000/api/basket/getAllBasket",
+          { headers: { Authorization: token } }
+        );
+        dispatch(setBasketItems(response.data));
+      } catch (error) {
+        dispatch(setBasketError("Failed to fetch basket items"));
+      }
+    };
+
+    fetchBasketItems();
+  }, [dispatch]);
+
+  // Function to handle item deletion and refetch basket items
+ // Calculate the total sum of prices using useMemo
+ const totalPrice = useMemo(() => {
+  return basketItems.reduce((total: number, item: { price: number; quantity: number; }) => total + item.price * item.quantity, 0);
+}, [basketItems]);
 
   return (
     <>
-      {" "}
-      {isBasketOpen && ( // Show the basket only when isBasketOpen is true
+      {isBasketOpen && (
         <div className={`Basket ${BasketState ? "open" : ""}`}>
-          {" "}
           <div className="Basket_inner">
             <div className="basket_header">
               <h1>Корзина</h1>
@@ -29,38 +62,33 @@ const Basket = (props: BasketProps) => {
               </span>
             </div>
             <div className="basket_content">
-              {basketItems.length === 0 ? (
+              {loading ? (
+                <p>Loading...</p>
+              ) : error ? (
+                <p className="error-message">{error}</p>
+              ) : basketItems.length === 0 ? (
                 <p className="nothing">К сожаление вы еще ничего не купили</p>
               ) : (
-                basketItems.map((item , index) => (
-                  <div key = {index} className="Basket_items">
-                    <div className="Basket_item">
-                      <div className="basket_item_inner">
-                        <div className="basket_item_left">
-                          <img src={item.itemImage} alt="" />
-                        </div>
-                        <div className="Basket_item_right">
-                          <h1>{item.title}</h1>
-                          <div className="basket_img">
-                            <img src={close} alt="" />
-                          </div>
-                          <div className="button_control">
-                            <div className="control_item">
-                              <button>+</button>
-                              <span>1</span>
-                              <button>-</button>
-                            </div>
-                          </div>
-
-                          <div className="basket_price">{item.price}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))
+                <>
+              {basketItems.map((item: { id: number; img: string; price: number; productName: string; }, index: Key | null | undefined) => (
+                  <BasketItem
+                    id={item.id}
+                    key={index}
+                    img={item.img}
+                    price={item.price}
+                    productName={item.productName}
+                  />
+                ))}
+                <div className="total_sum">
+                  <h1>Общая сумма</h1>
+                  <span>{totalPrice}</span>
+                </div>
+                <NavLink to="/order">
+                <button className="btn">Оплатить</button>
+              </NavLink>
+              </>
               )}
-              <NavLink to="/order"> <button className="btn">Оплатить</button></NavLink>
-             
+              
             </div>
           </div>
         </div>
