@@ -2,7 +2,7 @@ import close from "../../assets/Icons/close-svgrepo-com.svg";
 import "./Basket.scss";
 import { Key, useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setBasketItems, setBasketError } from "../../store/reducers/redusers";
+import { setBasketItems, setBasketError  } from "../../store/reducers/redusers";
 
 import axios from "axios";
 import { NavLink } from "react-router-dom";
@@ -26,22 +26,24 @@ const Basket = (props: BasketProps) => {
   const basketItems = useSelector((state:any) => state.basket.basketItems);
   const loading = useSelector((state:any) => state.basket.loading);
   const error = useSelector((state:any) => state.basket.error);
+  const authToken = localStorage.getItem("authToken");
 
   useEffect(() => {
-    const fetchBasketItems = async () => {
-      try {
-        const token = localStorage.getItem("authToken");
-        const response = await axios.get(
-          "http://localhost:5000/api/basket/getAllBasket",
-          { headers: { Authorization: token } }
-        );
-        dispatch(setBasketItems(response.data));
-      } catch (error) {
-        dispatch(setBasketError("Failed to fetch basket items"));
-      }
-    };
+    if (authToken) {
+      const fetchBasketItems = async () => {
+        try {
+          const response = await axios.get(
+            "http://localhost:5000/api/basket/getAllBasket",
+            { headers: { Authorization: authToken } }
+          );
+          dispatch(setBasketItems(response.data));
+        } catch (error) {
+          dispatch(setBasketError("Failed to fetch basket items"));
+        }
 
-    fetchBasketItems();
+      };
+      fetchBasketItems();
+    }
   }, [dispatch]);
 
   // Function to handle item deletion and refetch basket items
@@ -66,7 +68,7 @@ const Basket = (props: BasketProps) => {
                 <p>Loading...</p>
               ) : error ? (
                 <p className="error-message">{error}</p>
-              ) : basketItems.length === 0 ? (
+              ) : !authToken ||basketItems.length === 0 ? (
                 <p className="nothing">К сожаление вы еще ничего не купили</p>
               ) : (
                 <>

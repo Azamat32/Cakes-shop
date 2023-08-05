@@ -17,7 +17,7 @@ interface BasketState {
 
 const initialState: BasketState = {
   basketItems: [],
-  loading: true,
+  loading: false,
   error: null,
 };
 
@@ -25,6 +25,9 @@ const basketSlice = createSlice({
   name: "basket",
   initialState,
   reducers: {
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
     setBasketItems: (state, action: PayloadAction<BasketItem[]>) => {
       state.basketItems = action.payload;
       state.loading = false;
@@ -56,25 +59,32 @@ const basketSlice = createSlice({
     },
   },
 });
-
 export const fetchBasketItemsAsync = (): AppThunk => async (dispatch) => {
   try {
     const token = localStorage.getItem("authToken");
-    const response = await axios.get(
-      "http://localhost:5000/api/basket/getAllBasket", // Replace with your backend API endpoint to get all basket items
-      { headers: { Authorization: token } }
-    );
-    dispatch(setBasketItems(response.data));
+    if (token) {
+      dispatch(setLoading(true)); // Set loading to true when starting the request
+      const response = await axios.get(
+        "http://localhost:5000/api/basket/getAllBasket",
+        { headers: { Authorization: token } }
+      );
+      dispatch(setBasketItems(response.data));
+    }
   } catch (error) {
     dispatch(setBasketError("Failed to fetch basket items"));
+  } finally {
+    dispatch(setLoading(false)); // Set loading to false after the request is completed
   }
 };
+
 
 export const {
   setBasketItems,
   removeItemFromBasket,
   setBasketError,
   addItemToBasket,
+  setLoading
 } = basketSlice.actions;
 
 export default basketSlice.reducer;
+

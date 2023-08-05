@@ -29,7 +29,6 @@ const DashboardLog = (_props: LoginFormProps) => {
       setVerificationCodeSent(true);
     } catch (error) {
       setError("Error sending verification code");
-      console.error(error);
     }
   };
 
@@ -50,7 +49,6 @@ const DashboardLog = (_props: LoginFormProps) => {
       const token = response.data.token; // Assuming the token is received from the server's response
       localStorage.setItem("authToken", token);
       const decodedToken = jwtDecode<any>(token); // The 'any' type here is used to allow any payload data
-      console.log(decodedToken);
 
       // Assuming the token contains the user data in its payload
       const userData = {
@@ -59,12 +57,10 @@ const DashboardLog = (_props: LoginFormProps) => {
         phone: decodedToken.phone,
         role: decodedToken.role,
       };
-      console.log(userData);
 
       dispatch(setLoggedIn(userData));
     } catch (error) {
       setError("Error verifying verification code");
-      console.error(error);
     }
   };
   const formatPhoneNumber = (value: string) => {
@@ -75,6 +71,11 @@ const DashboardLog = (_props: LoginFormProps) => {
 
     return `+7 (${firstThree}) ${secondThree} ${lastFour}`;
   };
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatPhoneNumber(e.target.value);
+    setPhone(formattedValue);
+  };
+
   return (
     <div className="login-form">
       <h2>Логин</h2>
@@ -84,8 +85,8 @@ const DashboardLog = (_props: LoginFormProps) => {
           <input
             type="text"
             placeholder="+7 (___) ___ __ __"
-            value={formatPhoneNumber(phone)}
-            onChange={(e) => setPhone(e.target.value)}
+            value={phone}
+            onChange={handlePhoneChange}
           />
           <button onClick={handleSendVerificationCode}>Отправить код</button>
         </div>

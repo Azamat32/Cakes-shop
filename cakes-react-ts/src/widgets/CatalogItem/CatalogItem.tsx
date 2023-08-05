@@ -3,9 +3,13 @@ import Loader from "../Loader/Loader";
 import axios from "axios";
 import defaultImage from "../../assets/ExampleGallery/cake1.jpg";
 import jwtDecode from "jwt-decode";
-import { addItemToBasket,fetchBasketItemsAsync } from "../../store/reducers/redusers";
+import {
+  addItemToBasket,
+  fetchBasketItemsAsync,
+} from "../../store/reducers/redusers";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
+import close from "../../assets/Icons/close-svgrepo-com.svg";
 
 type ItemProps = {
   key: number;
@@ -38,7 +42,7 @@ const CatalogItem = (props: ItemProps) => {
       if (!token) {
         // Handle case when token is missing or expired
         setIsAddingToBasket(false);
-        setError("User not authenticated");
+        setError("Вы не зарегестрированы");
         return;
       }
       const decodedToken = jwtDecode<any>(token);
@@ -78,7 +82,10 @@ const CatalogItem = (props: ItemProps) => {
   const handleImageLoad = () => {
     setIsLoading(false);
   };
+const deleteError = () => {
+  setError(null);
 
+}
   return (
     <div className="Item" role={role}>
       <div className="item_inner">
@@ -108,7 +115,14 @@ const CatalogItem = (props: ItemProps) => {
             <button onClick={handleBuyButtonClick} disabled={isAddingToBasket}>
               {isAddingToBasket ? "Добавляется..." : "Купить"}
             </button>
-            {error && <div className="error-message">{error}</div>}
+            {error && (
+              <div className="error-message">
+                <div className="close">
+                  <img src={close} alt="" onClick={deleteError} />
+                </div>
+                <div className="error_inner">{error}</div>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -12,7 +12,6 @@
     }
   }
   .item_product_cost {
-    
     span {
       font-size: 20px;
       font-weight: 500;
@@ -59,20 +58,40 @@
         color: rgb(253, 175, 175);
       }
     }
+
+    .error-message {
+      position: absolute;
+      color: #000;
+      border-radius: 10px;
+      padding: 10px;
+      background: #fff;
+      box-shadow: 4px 10px 8px 3px;
+      .close {
+        width: 20px;
+        position: absolute;
+        right: 5px;
+        z-index: 11;
+        img {
+          width: 100%;
+        }
+      }
+      .error_inner {
+      }
+    }
   }
 
-    .item_inner {
-      padding: 16px;
-      border: 1px solid rgb(253, 175, 175);
-      border-radius: 8px;
-      cursor: pointer;
-      z-index: 1;
-      width: 100%;
-    }
+  .item_inner {
+    padding: 16px;
+    border: 1px solid rgb(253, 175, 175);
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 1;
+    width: 100%;
+  }
 
-    .item_btn {
-      display: flex;
-    }
+  .item_btn {
+    display: flex;
+  }
 }
 
 @media (max-width: 720px) {

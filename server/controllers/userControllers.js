@@ -34,7 +34,6 @@ exports.sendVerificationCodeRegister = async (req, res, next) => {
     const generatedVerificationCode = Math.floor(
       100000 + Math.random() * 900000
     ).toString();
-
     // Send the verification code via Twilio
     sendVerificationCodeViaTwilio(phone_number, generatedVerificationCode);
 
@@ -65,7 +64,7 @@ exports.verifyVerificationCode = async (req, res, next) => {
     if (!storedVerificationCode) {
       return res.status(404).json({ message: "Verification code not found" });
     }
-
+    console.log(storedVerificationCode.code);
     // Check if the verification code provided by the user matches the one sent to their phone
     if (storedVerificationCode.code !== verification_code) {
       return res.status(401).json({ message: "Invalid verification code" });

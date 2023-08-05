@@ -60,6 +60,10 @@ const DashboardReg = (_props: RegistrationFormProps) => {
 
     return `+7 (${firstThree}) ${secondThree} ${lastFour}`;
   };
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatPhoneNumber(e.target.value);
+    setPhone(formattedValue);
+  };
   return (
     <div className="registration-form">
       <h2>Регистрация</h2>
@@ -74,9 +78,10 @@ const DashboardReg = (_props: RegistrationFormProps) => {
           />
           <input
             type="text"
-            placeholder="Phone"
-            value={formatPhoneNumber(phone)}
-            onChange={(e) => setPhone(e.target.value)}
+            placeholder="+7 (___) ___ __ __"
+
+            value={phone}
+            onChange={handlePhoneChange}
           />
           <button onClick={handleSendVerificationCode}>Отправить код</button>
         </div>
