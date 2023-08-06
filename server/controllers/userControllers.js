@@ -47,10 +47,8 @@ exports.sendVerificationCodeRegister = async (req, res, next) => {
 
     return res.status(201).json({
       message: "Verification code sent successfully",
-      verification_code: generatedVerificationCode,
     });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ message: "Server error" });
   }
 };
@@ -64,7 +62,6 @@ exports.verifyVerificationCode = async (req, res, next) => {
     if (!storedVerificationCode) {
       return res.status(404).json({ message: "Verification code not found" });
     }
-    console.log(storedVerificationCode.code);
     // Check if the verification code provided by the user matches the one sent to their phone
     if (storedVerificationCode.code !== verification_code) {
       return res.status(401).json({ message: "Invalid verification code" });

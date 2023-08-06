@@ -1,0 +1,17 @@
+.buyPage {
+  .title {
+    h1 {
+    }
+  }
+  .orders_wrap {
+    .order_header {
+      display: grid;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #ececec;
+      align-items: center;
+      grid-template-columns: 1fr 226px 150px 36px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+  }
+}

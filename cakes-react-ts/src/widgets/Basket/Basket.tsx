@@ -11,13 +11,7 @@ type BasketProps = {
   BasketState: boolean;
   onCloseBasket: () => void;
 };
-interface Basket {
-  id: number;
-  img: string;
-  productName: string;
-  price: number;
-  quantity: number;
-}
+
 const Basket = (props: BasketProps) => {
   const { BasketState, onCloseBasket } = props;
   const dispatch = useDispatch();

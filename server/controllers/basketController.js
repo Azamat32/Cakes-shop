@@ -88,3 +88,73 @@ exports.deleteOne = [
     }
   },
 ];
+
+// controllers/basketController.js
+
+exports.increaseQuantity = [
+  isAuthenticated,
+  async (req, res, next) => {
+    try {
+      // Assuming the request body contains the item ID to be updated
+      const { id } = req.params;
+
+      // Find the item in the Basket table by its ID
+      const itemToUpdate = await Basket.findOne({ where: { id: id } });
+
+      // If the item is not found, return an error
+      if (!itemToUpdate) {
+        return res.status(404).json({ error: "Item not found in basket" });
+      }
+
+      // Increase the quantity of the item by 1 and save it to the database
+      itemToUpdate.quantity += 1;
+      await itemToUpdate.save();
+
+      res.json(itemToUpdate);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to increase quantity" });
+    }
+  },
+];
+
+exports.decreaseQuantity = [
+  isAuthenticated,
+  async (req, res, next) => {
+    try {
+      // Assuming the request body contains the item ID to be updated
+      const { id } = req.params;
+
+      // Find the item in the Basket table by its ID
+      const itemToUpdate = await Basket.findOne({ where: { id: id } });
+
+      // If the item is not found, return an error
+      if (!itemToUpdate) {
+        return res.status(404).json({ error: "Item not found in basket" });
+      }
+
+      // Decrease the quantity of the item by 1 and save it to the database
+      itemToUpdate.quantity = Math.max(itemToUpdate.quantity - 1, 1);
+      await itemToUpdate.save();
+
+      res.json(itemToUpdate);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to decrease quantity" });
+    }
+  },
+];
+
+exports.getOne = [
+  isAuthenticated,
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const itemInBasket = await Basket.findOne({ where: { id: id } });
+      if (!itemInBasket) {
+        return res.status(404).json({ error: "Item not found in basket" });
+      }
+      res.json(itemInBasket);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+];

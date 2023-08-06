@@ -14,6 +14,7 @@ i18n.use(initReactI18next).init({
         eng:"ENG",
         name:"Your name",
         phone: "Your phone number",
+        buy: "Payment"
       },
     },
     ru: {
@@ -26,7 +27,9 @@ i18n.use(initReactI18next).init({
         exit: 'Выход',
         eng:"RU",
         name:"Ваше имя",
-        phone: "Ваш номер телефона"
+        phone: "Ваш номер телефона",
+        buy: "Оплата"
+
       },
     },
     kz: {
@@ -39,7 +42,9 @@ i18n.use(initReactI18next).init({
         exit: 'Шығу',
         eng: "KZ",
         name:"Аты-жөні",
-        phone: "Сіздің номерініз"
+        phone: "Сіздің номерініз",
+        buy: "Төлем"
+
       },
     },
   },

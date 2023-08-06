@@ -7,7 +7,7 @@ import {
   fetchBasketItemsAsync,
 } from "../../../store/reducers/redusers";
 import { AppDispatch } from "../../../store/store";
-
+import "./BuyItem.scss";
 type BasketProps = {
   id: number;
   img: string;
@@ -15,14 +15,13 @@ type BasketProps = {
   productName: string;
 };
 
-const BasketItem = (props: BasketProps) => {
+const BuyItem = (props: BasketProps) => {
   const { id, img, price, productName } = props;
   const dispatch = useDispatch();
   const dispatch2: AppDispatch = useDispatch();
 
   const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(price);
- ;
   const fetchBasketItems = async () => {
     try {
       const token = localStorage.getItem("authToken");
@@ -32,14 +31,14 @@ const BasketItem = (props: BasketProps) => {
 
         { headers: { Authorization: token } }
       );
-      
+
       setQuantity(response.data.quantity);
     } catch (error) {}
   };
   useEffect(() => {
     // Fetch the quantity of the item when the component mounts
     fetchBasketItems();
-  }, [])
+  }, []);
   useEffect(() => {
     // Update the total price whenever quantity changes
     setTotalPrice(price * quantity);
@@ -56,8 +55,7 @@ const BasketItem = (props: BasketProps) => {
       setQuantity((prevQuantity) => prevQuantity + 1);
       fetchBasketItems();
       dispatch2(fetchBasketItemsAsync());
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleDecrement = async () => {
@@ -72,8 +70,7 @@ const BasketItem = (props: BasketProps) => {
       setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1));
       fetchBasketItems();
       dispatch2(fetchBasketItemsAsync());
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleDelete = async () => {
@@ -86,21 +83,20 @@ const BasketItem = (props: BasketProps) => {
       );
       dispatch(removeItemFromBasket(id));
       dispatch2(fetchBasketItemsAsync());
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   return (
     <div className="Basket_item">
       <div className="basket_item_inner">
-        <div className="basket_item_left">
-          <img src={`http://localhost:5000/${img}`} alt="" />
-        </div>
-        <div className="Basket_item_right">
-          <h1>{productName}</h1>
-          <div className="basket_img">
-            <img onClick={handleDelete} src={close} alt="" />
+        <div className="basket_item_content">
+          <div className="basket_name">
+            <div className="basket_img">
+              <img src={`http://localhost:5000/${img}`} alt="" />
+            </div>
+            <h1>{productName}</h1>
           </div>
+
           <div className="button_control">
             <div className="control_item">
               <button onClick={handleDecrement}>-</button>
@@ -108,12 +104,15 @@ const BasketItem = (props: BasketProps) => {
               <button onClick={handleIncrement}>+</button>
             </div>
           </div>
-
           <div className="basket_price">{totalPrice}</div>
+
+          <div className="close">
+            <img onClick={handleDelete} src={close} alt="" />
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default BasketItem;
+export default BuyItem;
