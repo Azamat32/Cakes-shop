@@ -33,7 +33,6 @@ const MainPage = (_props: Props) => {
  
   useEffect(() => {
     // Make an API request to fetch the products from the backend
-    
     axios.get("http://localhost:5000/api/products/catalog")
       .then((response) => {
         setProducts(response.data);

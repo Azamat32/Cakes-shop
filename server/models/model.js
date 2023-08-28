@@ -154,6 +154,7 @@ Category.belongsToMany(Product, {
   through: "ProductCategory", // Name of the join table
   foreignKey: "category_id",
 });
+
 module.exports = {
   User,
   Basket,
